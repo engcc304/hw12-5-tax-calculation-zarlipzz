@@ -47,3 +47,65 @@
         Tax (7% per year) : 61,017.60 Bath
         Most tax in company : Bill (18,564.00 Bath per year)
 */
+
+#include <stdio.h>
+#include <string.h>
+
+struct Employee {
+    char name[50];
+    float salary;
+    float tax;
+};
+
+int main() {
+    struct Employee employees[100];
+    char name[50];
+    float salary;
+    int count = 0;
+
+    // Input employee information
+    while (1) {
+        printf("Employee %d's Name :\n", count + 1);
+        scanf("%s", name);
+
+        if (strcmp(name, "-1") == 0) {
+            break;
+        }
+
+        strcpy(employees[count].name, name);
+
+        printf("Salary (Bath/Month) :\n");
+        scanf("%f", &salary);
+        employees[count].salary = salary;
+
+        count++;
+    }
+
+    // Calculate total salary and tax
+    float totalSalaryPerMonth = 0;
+    for (int i = 0; i < count; i++) {
+        totalSalaryPerMonth += employees[i].salary;
+    }
+
+    float totalSalaryPerYear = totalSalaryPerMonth * 12;
+    float totalTax = totalSalaryPerYear * 0.07;
+
+    // Find the employee with the highest tax
+    int maxTaxIndex = 0;
+    float maxTax = employees[0].salary * 12 * 0.07;
+    for (int i = 1; i < count; i++) {
+        float tax = employees[i].salary * 12 * 0.07;
+        if (tax > maxTax) {
+            maxTax = tax;
+            maxTaxIndex = i;
+        }
+    }
+
+    // Output results
+    printf("All salary per month: %.2f Bath\n", totalSalaryPerMonth);
+    printf("All salary per year: %.2f Bath\n", totalSalaryPerYear);
+    printf("Tax (7%% per year) : %.2f Bath\n", totalTax);
+    printf("Most tax in company : %s (%.2f Bath per year)\n", employees[maxTaxIndex].name, maxTax);
+
+    return 0;
+}
